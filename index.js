@@ -22,14 +22,34 @@ mongoose.connect(databaseURL).then(()=>{
 });
 
 app.post("/login", (req, res)=>{
-    new StudentsModel(req.body).save().then((data)=>{
+    const {password, confirmPassword} = req.body;
+    if(password === confirmPassword){
+        new StudentsModel(req.body).save().then((data)=>{
+            console.log("login", data);
+            if(data){
+                res.render("login");
+            }else{
+                res.send("No data")
+            }
+        }).catch((err)=>{
+            res.send(err);
+        });
+    }else{
+        res.send("password doesn't match");
+    };
+});
+
+app.post("/myWebsite", (req, res)=>{
+    const {email, password} = req.body;
+    StudentsModel.findOne({email: email, password: password}).then((data)=>{
+        console.log("myWebsite", data);
         if(data){
-            res.render("login");
+            res.render("myWebsite")
         }else{
-            res.send("No data")
-        }
+            res.send("no website");
+        };
     }).catch((err)=>{
-        res.send(err);
+        console.log(err);
     });
 });
 
