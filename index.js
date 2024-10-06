@@ -46,7 +46,7 @@ app.post("/myWebsite", (req, res)=>{
         if(data){
             res.render("myWebsite")
         }else{
-            res.send("no website");
+            res.send("invalid inputs");
         };
     }).catch((err)=>{
         console.log(err);
